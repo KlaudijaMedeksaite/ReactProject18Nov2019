@@ -48,6 +48,7 @@ app.get('/whatever', (req,res) => {
 app.get('/api/books/:id',(req,res)=>{
     console.log(req.params.id);
 
+    
     bookModel.findById(req.params.id, (error,data)=>{
         res.json(data);
     })
