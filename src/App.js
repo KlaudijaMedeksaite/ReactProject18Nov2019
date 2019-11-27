@@ -20,12 +20,14 @@ class App extends Component {
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="/reviews">Reviews</Nav.Link>
               <Nav.Link href="/createReview">Create Review</Nav.Link>
+              <Nav.Link href="/editRev">Edit</Nav.Link>
             </Nav>
           </Navbar>
           <Switch>
             <Route exact path="/" component={Start}/>
             <Route path="/reviews" component={Reviews}/>
             <Route path="/createReview" component={CreateRev}/>
+            
             <Route path="/editReview/:id" component={EditRev}/>
           </Switch>
         </div>

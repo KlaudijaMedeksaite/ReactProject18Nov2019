@@ -48,7 +48,6 @@ app.get('/whatever', (req,res) => {
 app.get('/api/books/:id',(req,res)=>{
     console.log(req.params.id);
 
-    
     bookModel.findById(req.params.id, (error,data)=>{
         res.json(data);
     })
@@ -60,7 +59,7 @@ app.get('/api/books',(req,res) =>{
     })
 })
    
-app.listen(port, () => console.log('app listening on port ${port}!'));
+app.listen(port, () => console.log('app listening on port ' + port));
 
 app.delete('/api/books/:id', (req, res)=>{
     console.log(req.params.id);

@@ -7,7 +7,8 @@ class EditRev extends React.Component {
 
     this.state = {Title:'',
                   Rating:'',
-                  Cover:''};
+                  Cover:'',
+                  _id: ''};
 
     //calling set methods
     this.doChange = this.doChange.bind(this);
@@ -26,7 +27,7 @@ class EditRev extends React.Component {
         })
     })
     .catch();
-}
+  }
   //methods setting title, cover pic and rating for book
   changeBookTitle(e){
     this.setState({Title: e.target.value});
@@ -47,56 +48,51 @@ class EditRev extends React.Component {
       rating: this.state.Rating,
       cover: this.state.Cover
     }
-    axios.post('http://localhost:4000/api/books', bookObject)
+    axios.put('http://localhost:4000/api/books/' + this.state._id, bookObject )
     .then()
     .catch();
-    this.setState({Title:'',Rating:'', Cover:''})
-    
   }
   render(){
     return (
       <div>
-                <form onSubmit={this.handleSubmit}>
-                    <div>
-                        <label>Title</label>
-                        <input 
-                        type='text'
-                        className='form-control'
-                        value={this.state.Title}
-                        onChange={this.changeBookTitle}>
-                        </input>
-                    </div>
-                    <div>
-                        <label>Movie Year</label>
-                        <input 
-                        type='text'
-                        className='form-control'
-                        value={this.state.Year}
-                        onChange={this.handleMovieYearChange}>
-                        </input>
-                    </div>
-                    <div>
-                        <label>Movie Poster URL</label>
-                    <textarea
-                        row='3'
-                        className='form-control'
-                        value={this.state.Poster}
-                        onChange={this.handleMoviePosterChange}>
-                        </textarea>
-                    </div>
-
-                    <div>
-                        <input
-                        type="submit"
-                        value="Change">
-                        </input>
-                    </div>
-                </form>
-            </div>
-      
-    );
+      <form onSubmit={this.doChange}>
+        <h4>Book Title</h4>
+          <div>
+            <input 
+              type='text'
+              className='form-control'
+              value={this.state.Title}
+              onChange={this.changeBookTitle}
+              ></input>
+          </div>
+          <div>
+            <h4>Rating (Out of 5 Stars)</h4>
+            <input 
+              type='text'
+              className='form-control'
+              value={this.state.Rating}
+              onChange={this.changeBookRating}
+            ></input>
+          </div>
+          <div>
+            <h4>Book Cover URL</h4>
+            <textarea
+              row='3'
+              className='form-control'
+              value={this.state.Cover}
+              onChange={this.changeBookCover}
+            ></textarea>
+          </div>
+          <div>
+            <input
+              type="submit"
+              value="Change">
+            </input>
+          </div>
+        </form>
+      </div>
+    )
   }
-  
 }
 
 export default EditRev;
