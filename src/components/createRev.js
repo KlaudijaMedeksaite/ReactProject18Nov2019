@@ -1,5 +1,6 @@
 import React from 'react';
 import '../App.css';
+import axios from 'axios';
 
 class CreateRev extends React.Component {
   constructor(props){
@@ -28,18 +29,29 @@ class CreateRev extends React.Component {
   }
 
   doChange(e){
-    alert(this.status.Title + "      " + this.status.Rating + "       " + this.status.Cover);
+    console.log(this.state.Title + " " + this.state.Rating+ " " +this.state.Cover);
     e.preventDefault();
+
+    const bookObject = {
+      title : this.state.Title,
+      rating: this.state.Rating,
+      cover: this.state.Cover
+    }
+    axios.post('http://localhost:4000/api/books', bookObject)
+    .then()
+    .catch();
     this.setState({Title:'',Rating:'', Cover:''})
+    
   }
 
  
   render(){
     return (
       <div className="App">
+        <h1>Create a Review</h1>
       <form onSubmit={this.doChange}>
-        <div>
-          <label>Book Title</label>
+        <div className = "createRev-form">
+          <h4>Book Title</h4>
           <input 
             type='text'
             className='form-control'
@@ -48,7 +60,7 @@ class CreateRev extends React.Component {
           ></input>
         </div>
         <div>
-          <label>Rating </label>
+          <h4>Rating (Out of 5 Stars)</h4>
           <input 
             type='text'
             className='form-control'
@@ -57,7 +69,7 @@ class CreateRev extends React.Component {
           ></input>
         </div>
         <div>
-          <label>Book Cover URL</label>
+          <h4>Book Cover URL</h4>
          <textarea
             row='3'
             className='form-control'
@@ -67,6 +79,7 @@ class CreateRev extends React.Component {
         </div>
 
         <div>
+          <br></br>
           <input
           type="submit"
           value="Add Review"
