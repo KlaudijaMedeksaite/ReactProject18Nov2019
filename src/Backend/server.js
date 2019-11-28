@@ -25,7 +25,8 @@ const Schema = mongoose.Schema;
 const bookSchema = new Schema({
     title:String,
     rating:String,
-    cover:String
+    cover:String,
+    review:String
 });
 const bookModel = mongoose.model('books', bookSchema);
 
@@ -36,7 +37,8 @@ app.post('/api/books', (req,res)=>{
     bookModel.create({
         title:req.body.title,
         rating:req.body.rating,
-        cover:req.body.cover
+        cover:req.body.cover,
+        review:req.body.review
     })
     
     res.json('Data uploaded');

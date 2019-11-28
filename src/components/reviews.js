@@ -22,7 +22,7 @@ class Reviews extends React.Component {
     return (
     <div className="App">
       <h1>Reviews</h1>
-      <Books theBooks={this.state.books}></Books>
+      <Books theBooks={this.state.books} ></Books>
     </div>
     );
   }

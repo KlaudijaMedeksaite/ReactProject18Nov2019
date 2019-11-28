@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 class EditRev extends React.Component {
   constructor(props){
@@ -8,6 +9,7 @@ class EditRev extends React.Component {
     this.state = {Title:'',
                   Rating:'',
                   Cover:'',
+                  Review:'',
                   _id: ''};
 
     //calling set methods
@@ -15,15 +17,18 @@ class EditRev extends React.Component {
     this.changeBookTitle = this.changeBookTitle.bind(this);
     this.changeBookCover = this.changeBookCover.bind(this);
     this.changeBookRating = this.changeBookRating.bind(this);
+    this.changeBookReview = this.changeBookReview.bind(this);
   }
   componentDidMount(){
+
     axios.get('http://localhost:4000/api/books/' + this.props.match.params.id)
     .then((response)=>{
         this.setState({
             _id:response.data._id,
             Title:response.data.title,
             Rating:response.data.rating,
-            Cover:response.data.cover
+            Cover:response.data.cover,
+            Review:response.data.review
         })
     })
     .catch();
@@ -38,15 +43,19 @@ class EditRev extends React.Component {
   changeBookRating(e){
     this.setState({Rating: e.target.value});
   }
+  changeBookReview(e){
+    this.setState({Review: e.target.value});
+  }
 
   doChange(e){
-    console.log(this.state.Title + " " + this.state.Rating+ " " +this.state.Cover);
+    console.log(this.state.Title + " " + this.state.Rating+ " " +this.state.Cover + " " + this.state.Review);
     e.preventDefault();
 
     const bookObject = {
       title : this.state.Title,
       rating: this.state.Rating,
-      cover: this.state.Cover
+      cover: this.state.Cover,
+      review: this.state.Review
     }
     axios.put('http://localhost:4000/api/books/' + this.state._id, bookObject )
     .then()
@@ -75,6 +84,15 @@ class EditRev extends React.Component {
             ></input>
           </div>
           <div>
+            <h4>Review</h4>
+            <textarea
+              row='3'
+              className='form-control'
+              value={this.state.Review}
+              onChange={this.changeBookReview} 
+              ></textarea>
+          </div>
+          <div>
             <h4>Book Cover URL</h4>
             <textarea
               row='3'
@@ -84,10 +102,7 @@ class EditRev extends React.Component {
             ></textarea>
           </div>
           <div>
-            <input
-              type="submit"
-              value="Change">
-            </input>
+                <Link to={"/Reviews"}  value="Change"  className="btn btn-outline-info">Edit</Link>
           </div>
         </form>
       </div>
