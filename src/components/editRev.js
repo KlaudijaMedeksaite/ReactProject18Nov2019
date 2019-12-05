@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 class EditRev extends React.Component {
   constructor(props){
@@ -20,7 +21,7 @@ class EditRev extends React.Component {
     this.changeBookReview = this.changeBookReview.bind(this);
   }
   componentDidMount(){
-
+    //once the component loads up this method displays what the current values are so you know what to change
     axios.get('http://localhost:4000/api/books/' + this.props.match.params.id)
     .then((response)=>{
         this.setState({
@@ -49,7 +50,6 @@ class EditRev extends React.Component {
 
   doChange(e){
     console.log(this.state.Title + " " + this.state.Rating+ " " +this.state.Cover + " " + this.state.Review);
-    e.preventDefault();
 
     const bookObject = {
       title : this.state.Title,
@@ -60,51 +60,69 @@ class EditRev extends React.Component {
     axios.put('http://localhost:4000/api/books/' + this.state._id, bookObject )
     .then()
     .catch();
+
+    // redirects back to page with reviews
+    this.props.history.push('/reviews')  
+    window.location.reload(); // refreshes the reviews window as without this for some reason the editted value doesn't update
+
   }
   render(){
     return (
-      <div>
-      <form onSubmit={this.doChange}>
-        <h4>Book Title</h4>
-          <div>
-            <input 
-              type='text'
-              className='form-control'
-              value={this.state.Title}
-              onChange={this.changeBookTitle}
+      <div style = {{display: 'flex',  justifyContent:'center', alignItems:'center'}}> {/*this div is to center the card*/}
+        <Card className="card text-white bg-dark mb-3" style={{width:"70%", height:"70%"}}> {/*makes card narrower and dark theme*/}
+        <br></br>
+
+          <form onSubmit={this.doChange}>
+            <Card.Header>Book Title</Card.Header>
+            <container style = {{display: 'flex',  justifyContent:'center', alignItems:'center'}}> {/*container to center input boxes*/}
+              <input 
+                style={{width: "500px"}}
+                type='text'
+                className='form-control'
+                value={this.state.Title} //sets this input to be the title
+                onChange={this.changeBookTitle} //when submit is pressed this changes the book title
               ></input>
-          </div>
-          <div>
-            <h4>Rating (Out of 5 Stars)</h4>
-            <input 
-              type='text'
-              className='form-control'
-              value={this.state.Rating}
-              onChange={this.changeBookRating}
-            ></input>
-          </div>
-          <div>
-            <h4>Review</h4>
-            <textarea
-              row='3'
-              className='form-control'
-              value={this.state.Review}
-              onChange={this.changeBookReview} 
+            </container>
+            <Card.Header>Rating (Out of 5 Stars)</Card.Header>
+            <container style = {{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+              <input 
+                style={{width: "500px"}}
+                type='text'
+                className='form-control'
+                value={this.state.Rating}
+                onChange={this.changeBookRating}
+              ></input>
+            </container>
+            <Card.Header>Review</Card.Header>
+            <container style = {{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+              <textarea
+                style={{width: "500px"}}
+                row='3'
+                className='form-control'
+                value={this.state.Review}
+                onChange={this.changeBookReview} 
               ></textarea>
-          </div>
-          <div>
-            <h4>Book Cover URL</h4>
-            <textarea
-              row='3'
-              className='form-control'
-              value={this.state.Cover}
-              onChange={this.changeBookCover}
-            ></textarea>
-          </div>
-          <div>
-                <Link to={"/Reviews"}  value="Change"  className="btn btn-outline-info">Edit</Link>
-          </div>
-        </form>
+            </container>
+            <Card.Header>Book Cover URL</Card.Header>
+            <container style = {{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+              <textarea
+                style={{width: "500px"}}
+                row='3'
+                className='form-control'
+                value={this.state.Cover}
+                onChange={this.changeBookCover}
+              ></textarea>
+            </container>      
+            <div>
+            <br></br>
+              {/*Button to submit new review, on click calls method doChange which posts everything to server*/}
+              <Button variant="info" type="submit" onClick="doChange">
+                Change Review
+              </Button>
+            </div>
+          </form>
+          <br></br>
+        </Card>
       </div>
     )
   }

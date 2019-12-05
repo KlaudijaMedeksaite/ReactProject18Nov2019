@@ -6,7 +6,7 @@ class Books extends React.Component
     render()
     {
         return this.props.theBooks.map((book)=>{
-            return <Book key={book.cover} book={book}></Book>
+            return <Book key={book._id} book={book}></Book> //gets book by the ID and displays it
         });
     }
 }

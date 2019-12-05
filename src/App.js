@@ -15,7 +15,8 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <Navbar bg="primary" variant="dark">
+          {/*Navigation tabs at the top*/}
+          <Navbar bg="info" variant="dark">
             <Nav className="mr-auto">
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="/reviews">Reviews</Nav.Link>
@@ -23,6 +24,7 @@ class App extends Component {
             </Nav>
           </Navbar>
           <Switch>
+            {/*Routes to component*/}
             <Route exact path="/" component={Start}/>
             <Route path="/reviews" component={Reviews}/>
             <Route path="/createReview" component={CreateRev}/>

@@ -22,8 +22,8 @@ class Book extends React.Component{
     render()
     {
         return(
-            <div>
-                <Card >
+            <div style = {{display: 'flex',  justifyContent:'center', alignItems:'center'}}> {/*this div is to center the card*/}
+                <Card className="card text-white bg-dark mb-3" style={{width:"80%"}}> {/*makes card narrower and dark theme*/}
                     <Card.Header>{this.props.book.title}
                     </Card.Header>
                     <Card.Body>
@@ -38,10 +38,12 @@ class Book extends React.Component{
                         </footer>
                     </Card.Text>
                     <div >
+                        {/*Buttons to delete and edit the review*/}
                         <Button variant="outline-success" onClick={this.deleteBook}>Delete</Button>
                         <Link to={"/editRev/" + this.props.book._id} className="btn btn-outline-info">Edit</Link>
                     </div>
                 </Card>
+                <br></br>
             </div>
         )
     }

@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 4000
+const port = 4000 //port for api
 
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -18,9 +18,11 @@ app.use(function(req, res, next) {
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
+//mongo server website
 const mongoDB = 'mongodb+srv://admin:admin@cluster0-ovc2j.mongodb.net/projectDatabase?retryWrites=true&w=majority';
 mongoose.connect(mongoDB, {useNewUrlParser:true});
 
+//schema of books for Mongo
 const Schema = mongoose.Schema;
 const bookSchema = new Schema({
     title:String,
@@ -30,7 +32,36 @@ const bookSchema = new Schema({
 });
 const bookModel = mongoose.model('books', bookSchema);
 
+//server listening on port 4000 for server use
+app.listen(port, () => console.log('app listening on port ' + port));
 
+//finds all books
+app.get('/api/books',(req,res) =>{
+    bookModel.find((error, data) => {
+        res.json({books:data});
+    })
+})
+
+//finds book by id
+app.get('/api/books/:id', (req,res)=>{
+    console.log("Get: " + req.params.id);
+    bookModel.findById(req.params.id, (error,data)=>{
+        res.json(data);
+    });
+})
+
+//used in edit to update book by id
+app.put('/api/books/:id', (req,res)=>{
+    console.log("Edit: " + req.params.id);
+    console.log(req.body);
+    bookModel.findByIdAndUpdate(req.params.id,
+        req.body,
+        {new:true},
+        (error,data)=>{
+            res.json(data);
+        })
+})
+//creates a new book and posts to server
 app.post('/api/books', (req,res)=>{
     console.log(req.body);
     
@@ -44,25 +75,8 @@ app.post('/api/books', (req,res)=>{
     res.json('Data uploaded');
 });
 
-app.get('/whatever', (req,res) => {
-    res.send('whatever');
-})
-app.get('/api/books/:id',(req,res)=>{
-    console.log(req.params.id);
 
-    bookModel.findById(req.params.id, (error,data)=>{
-        res.json(data);
-    })
-})
-
-app.get('/api/books',(req,res) =>{
-    bookModel.find((error, data) => {
-        res.json({books:data});
-    })
-})
-   
-app.listen(port, () => console.log('app listening on port ' + port));
-
+//delete the book by id 
 app.delete('/api/books/:id', (req, res)=>{
     console.log(req.params.id);
     bookModel.deleteOne({_id: req.params.id}, 
@@ -70,21 +84,3 @@ app.delete('/api/books/:id', (req, res)=>{
             res.json(data);
         });
 });
-
-app.put('/api/books/:id', (req,res)=>{
-    console.log("Edit: " + req.params.id);
-    console.log(req.body);
-    bookModel.findByIdAndUpdate(req.params.id,
-        req.body,
-        {new:true},
-        (error,data)=>{
-            res.json(data);
-        })
-})
-
-app.get('/api/books/:id', (req,res)=>{
-    console.log("Get: " + req.params.id);
-    bookModel.findById(req.params.id, (error,data)=>{
-        res.json(data);
-    });
-})
